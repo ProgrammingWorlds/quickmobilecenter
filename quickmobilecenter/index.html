@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>كويك موبايل سنتر | Quick Mobile Center — متجر هواتف محمولة في عمّان</title>
+<meta name="description" content="كويك موبايل سنتر — أحدث الهواتف والأجهزة الذكية، إكسسوارات أصلية وصيانة معتمدة. فروعنا: الدوار السابع | ماركا الشمالية | طبربور | تلاع العلي — 0798050999">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23e8192c'/%3E%3Ctext x='32' y='45' font-family='Arial' font-weight='bold' font-size='36' fill='white' text-anchor='middle'%3EQ%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============ BASE ============ */
+:root{
+  --bg:#070709; --bg2:#0d0d11; --card:#121218; --line:rgba(255,255,255,.08);
+  --red:#e8192c; --red2:#ff4d5a; --txt:#f4f4f6; --muted:#9b9ba6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{background:var(--bg);color:var(--txt);font-family:'Tajawal',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.display{font-family:'Changa',sans-serif}
+h1 em,h2 em{font-style:normal;color:var(--red2)}
+img{max-width:100%;display:block}
+a{color:inherit}
+::selection{background:var(--red);color:#fff}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:#0a0a0d}
+::-webkit-scrollbar-thumb{background:#232329;border-radius:8px;border:2px solid #0a0a0d}
+::-webkit-scrollbar-thumb:hover{background:var(--red)}
+.wrap{max-width:1280px;margin-inline:auto;padding-inline:clamp(20px,4vw,48px)}
+.section{padding:110px 0;position:relative}
+.num-ltr{direction:ltr;unicode-bidi:isolate;font-family:'Changa',sans-serif;font-weight:700;letter-spacing:1px}
+
+/* ============ GRAIN / PROGRESS / CURSOR ============ */
+.noise{position:fixed;inset:0;z-index:3000;pointer-events:none;opacity:.045;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E")}
+.progress{position:fixed;top:0;right:0;left:0;height:3px;background:var(--red);transform:scaleX(0);transform-origin:left;z-index:1200;direction:ltr}
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;display:none}
+.cursor-dot{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--red)}
+.cursor-ring{width:40px;height:40px;margin:-20px 0 0 -20px;border:1.5px solid rgba(255,255,255,.5);transition:border-color .3s}
+@media (hover:hover) and (pointer:fine){
+  body,a,button,.d-card,.tilt{cursor:none}
+  .cursor-dot,.cursor-ring{display:block}
+}
+
+/* ============ LOADER ============ */
+#loader{position:fixed;inset:0;z-index:10000;background:#070709;display:flex;align-items:center;justify-content:center}
+.loader-center{text-align:center}
+.loader-q{font-family:'Changa';font-weight:800;font-size:clamp(110px,18vw,180px);line-height:1;color:var(--red);text-shadow:0 0 90px rgba(232,25,44,.45);animation:qpulse 2s ease-in-out infinite}
+@keyframes qpulse{50%{transform:translateY(-9px)}}
+.loader-name{margin-top:12px;font-family:'Changa';font-weight:600;letter-spacing:.5em;font-size:12px;color:rgba(255,255,255,.6);direction:ltr}
+.loader-foot{position:absolute;bottom:40px;left:0;right:0;text-align:center;font-family:'Changa';font-weight:700;font-size:15px;color:var(--muted);direction:ltr}
+.loader-foot b{color:#fff;font-size:24px;font-weight:800}
+.loader-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.06)}
+.loader-bar i{display:block;height:100%;width:100%;background:var(--red);transform:scaleX(0);transform-origin:left}
+
+/* ============ NAV ============ */
+.nav{position:fixed;top:0;inset-inline:0;z-index:1000;border-bottom:1px solid transparent;transition:background .4s,border-color .4s}
+.nav.scrolled{background:rgba(8,8,10,.72);backdrop-filter:blur(16px);border-bottom-color:var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:78px;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand-q{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#ff2536,#b90f1e);display:grid;place-items:center;font-family:'Changa';font-weight:800;font-size:23px;color:#fff;box-shadow:0 8px 22px -6px rgba(232,25,44,.6)}
+.brand-t{font-family:'Changa';font-weight:700;font-size:18px;line-height:1.15;color:#fff}
+.brand-t b{display:block;font-family:'Changa';font-weight:600;font-size:8.5px;letter-spacing:.34em;color:var(--muted)}
+.nav-links{display:flex;gap:4px}
+.nav-links a{color:var(--muted);text-decoration:none;font-weight:500;font-size:15px;padding:10px 16px;border-radius:11px;transition:.3s}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.05)}
+.nav-cta{display:flex;align-items:center;gap:12px}
+.burger{display:none;width:46px;height:46px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.03);position:relative}
+.burger span{position:absolute;left:11px;right:11px;height:2px;background:#fff;border-radius:2px;transition:.35s;top:17px}
+.burger span:last-child{top:27px}
+.burger.open span:first-child{transform:translateY(5px) rotate(45deg)}
+.burger.open span:last-child{transform:translateY(-5px) rotate(-45deg)}
+
+/* Mobile menu */
+.menu-overlay{position:fixed;inset:0;z-index:900;background:rgba(9,9,12,.92);backdrop-filter:blur(20px);display:flex;flex-direction:column;align-items:center;justify-content:center;clip-path:circle(0% at calc(100% - 52px) 39px);visibility:hidden}
+.m-link{font-family:'Changa';font-weight:800;font-size:clamp(34px,7vw,54px);color:#fff;text-decoration:none;padding:8px 22px;display:flex;align-items:baseline;gap:14px;transition:color .3s}
+.m-link i{font-style:normal;font-size:14px;color:var(--red2);font-family:'Changa'}
+.m-link:hover{color:var(--red2)}
+.m-foot{margin-top:34px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center}
+
+/* ============ BUTTONS ============ */
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:15px;font-weight:700;font-size:15.5px;font-family:'Tajawal';text-decoration:none;border:0;transition:transform .3s,box-shadow .3s,background .3s,border-color .3s,color .3s}
+.btn svg{width:18px;height:18px;flex:none}
+.btn-red{background:linear-gradient(135deg,#ff2536,#c8101f);color:#fff;box-shadow:0 14px 34px -10px rgba(232,25,44,.55)}
+.btn-red:hover{transform:translateY(-3px);box-shadow:0 20px 44px -10px rgba(232,25,44,.7)}
+.btn-ghost{background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--txt)}
+.btn-ghost:hover{border-color:rgba(232,25,44,.6);color:#fff;transform:translateY(-3px)}
+
+/* ============ HERO ============ */
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:130px 0 70px;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(70% 60% at 50% 40%,#000 30%,transparent 100%);mask-image:radial-gradient(70% 60% at 50% 40%,#000 30%,transparent 100%)}
+.bg-glow{position:absolute;width:64vw;height:64vw;max-width:900px;max-height:900px;background:radial-gradient(circle,rgba(232,25,44,.16),transparent 62%);top:-14%;inset-inline-start:-12%}
+.wm{position:absolute;bottom:-3%;inset-inline-start:-4%;font-family:'Changa';font-weight:800;font-size:min(23vw,300px);line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.06);letter-spacing:8px;pointer-events:none;user-select:none;direction:ltr}
+.hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;width:100%}
+.hero-tag{display:inline-flex;align-items:center;gap:10px;padding:9px 18px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);font-size:13.5px;color:#d6d6de;font-weight:500}
+.hero-tag::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 0 0 rgba(232,25,44,.6);animation:ping 1.8s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 9px rgba(232,25,44,0)}100%{box-shadow:0 0 0 0 rgba(232,25,44,0)}}
+.hero-title{margin-top:26px;font-size:clamp(54px,9vw,124px);font-weight:800;line-height:1.1;display:flex;flex-wrap:wrap;gap:0 .2em}
+.mask{display:inline-block;overflow:hidden;padding-block:.09em;margin-block:-.09em}
+.mask .w{display:inline-block;will-change:transform}
+.mask.accent .w{color:var(--red)}
+.hero-en{margin-top:16px;display:flex;align-items:center;gap:16px;font-family:'Changa';font-weight:600;font-size:12px;letter-spacing:.38em;color:rgba(255,255,255,.55);direction:ltr}
+.hero-en .line{width:56px;height:1px;background:linear-gradient(90deg,transparent,rgba(232,25,44,.9))}
+.hero-en .line:last-child{transform:scaleX(-1)}
+.hero-sub{margin-top:22px;color:var(--muted);font-size:clamp(15px,1.6vw,17.5px);line-height:1.95;max-width:560px}
+.hero-cta{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
+.v-chips{margin-top:38px;padding-top:26px;border-top:1px solid var(--line);display:flex;gap:26px;flex-wrap:wrap}
+.v-chip{display:flex;gap:9px;align-items:center;color:var(--muted);font-weight:500;font-size:14px}
+.v-chip svg{width:17px;height:17px;color:var(--red2);flex:none}
+
+/* Scroll hint */
+.scroll-hint{position:absolute;bottom:22px;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--muted);font-size:11.5px;z-index:2}
+.mouse{width:24px;height:38px;border:2px solid rgba(255,255,255,.25);border-radius:14px;display:flex;justify-content:center;padding-top:7px}
+.mouse i{width:3px;height:8px;border-radius:3px;background:var(--red2);animation:wheel 1.6s infinite}
+@keyframes wheel{0%{transform:translateY(0);opacity:1}80%{transform:translateY(12px);opacity:0}100%{opacity:0}}
+
+/* ============ 3D PHONE ============ */
+.phone-scene{position:relative;height:640px;display:grid;place-items:center;perspective:1500px}
+.orbit{position:absolute;border-radius:50%;border:1px dashed rgba(255,255,255,.09)}
+.orbit.o1{width:560px;height:560px;border-color:rgba(232,25,44,.28);animation:rot 46s linear infinite}
+.orbit.o2{width:760px;height:760px;animation:rot 80s linear infinite reverse}
+.orbit i{position:absolute;top:-5px;left:50%;width:9px;height:9px;border-radius:50%;background:var(--red2);box-shadow:0 0 14px var(--red)}
+@keyframes rot{to{transform:rotate(360deg)}}
+.phone-wrap{position:relative;z-index:2;filter:drop-shadow(0 50px 90px rgba(0,0,0,.6)) drop-shadow(0 24px 60px rgba(232,25,44,.16))}
+.phone-tilt,.phone-float{transform-style:preserve-3d}
+.phone{position:relative;width:270px;height:552px;transform-style:preserve-3d;will-change:transform}
+.p-front{position:absolute;inset:0;border-radius:48px;background:linear-gradient(150deg,#3d3d47,#101014 38%,#282830 62%,#0b0b0f);box-shadow:inset 0 0 0 2px rgba(255,255,255,.1);transform:translateZ(13px)}
+.p-screen{position:absolute;inset:10px;border-radius:40px;overflow:hidden;background:radial-gradient(130% 100% at 80% 0%,#ff5160 0%,#8f1220 32%,#2a070d 62%,#07070a 100%),#0a0a0c}
+.p-island{position:absolute;top:15px;left:50%;transform:translateX(-50%);width:86px;height:25px;border-radius:14px;background:#050506;border:1px solid rgba(255,255,255,.07)}
+.p-time{position:absolute;top:58px;left:0;right:0;text-align:center;font-family:'Changa';font-weight:700;font-size:44px;line-height:1;direction:ltr}
+.p-date{position:absolute;top:108px;left:0;right:0;text-align:center;font-size:12px;color:rgba(255,255,255,.55)}
+.p-notif{position:absolute;top:150px;inset-inline:16px;display:flex;gap:9px;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:15px;padding:10px 12px;font-size:11px;color:#eee;backdrop-filter:blur(8px)}
+.p-notif b{width:26px;height:26px;flex:none;border-radius:8px;background:var(--red);display:grid;place-items:center;font-family:'Changa';font-size:14px}
+.p-q{position:absolute;top:50%;left:50%;transform:translate(-50%,-42%);font-family:'Changa';font-weight:800;font-size:185px;color:rgba(255,255,255,.06)}
+.p-dock{position:absolute;bottom:18px;left:0;right:0;display:flex;justify-content:center;gap:12px}
+.p-dock i{width:44px;height:44px;border-radius:13px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.1)}
+.p-dock i:nth-child(1){background:linear-gradient(135deg,#ff2536,#7c0a14)}
+.p-dock i:nth-child(2){background:linear-gradient(135deg,#c9ccd4,#5a5f6b)}
+.p-dock i:nth-child(3){background:linear-gradient(135deg,#8ff0cd,#14684e)}
+.p-dock i:nth-child(4){background:linear-gradient(135deg,#cbb0ff,#5b21b6)}
+.p-shine{position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.13) 50%,transparent 58%);animation:sweep 5.5s ease-in-out infinite;pointer-events:none}
+@keyframes sweep{0%{transform:translateX(-55%)}55%,100%{transform:translateX(55%)}}
+.p-back{position:absolute;inset:0;border-radius:48px;background:linear-gradient(150deg,#2a2a31,#0d0d11 45%,#1d1d23 70%,#0a0a0e);box-shadow:inset 0 0 0 2px rgba(255,255,255,.07);transform:translateZ(-13px) rotateY(180deg)}
+.cam{position:absolute;top:16px;inset-inline-start:16px;width:98px;height:200px;background:linear-gradient(160deg,#1b1b21,#0c0c10);border-radius:30px;border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;gap:13px;padding-top:16px}
+.cam b{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#3d4a63,#10131c 62%);box-shadow:inset 0 0 0 3px #1f2330,0 4px 10px rgba(0,0,0,.5)}
+.cam u{width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#ffe9a8,#8a6d1f)}
+.p-logo-back{position:absolute;bottom:12%;left:0;right:0;text-align:center;font-family:'Changa';font-weight:600;letter-spacing:.42em;font-size:10px;color:rgba(255,255,255,.18);direction:ltr}
+.p-btn{position:absolute;inset-inline-end:-3px;width:3px;border-radius:2px;background:#33333b;transform:translateZ(0)}
+.p-btn.b1{top:130px;height:62px}.p-btn.b2{top:210px;height:38px}.p-btn.b3{top:262px;height:38px}
+.phone-shadow{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);width:360px;height:64px;background:radial-gradient(50% 50% at 50% 50%,rgba(232,25,44,.3),transparent 70%);filter:blur(12px)}
+.chip{position:absolute;z-index:3;display:flex;gap:10px;align-items:center;padding:12px 18px;border-radius:15px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(12px);font-weight:700;font-size:14px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.chip svg{width:18px;height:18px;color:var(--red2)}
+.chip-1{top:7%;inset-inline-end:-2%}
+.chip-2{bottom:13%;inset-inline-start:-4%}
+
+/* ============ MARQUEE ============ */
+.marquee{direction:ltr;overflow:hidden;border-block:1px solid rgba(232,25,44,.16);padding:20px 0;background:linear-gradient(90deg,#0d0507,#170609,#0d0507)}
+.m-track{display:flex;align-items:center;width:max-content;animation:mscroll 30s linear infinite;will-change:transform}
+.marquee:hover .m-track{animation-play-state:paused}
+@keyframes mscroll{to{transform:translateX(-50%)}}
+.m-group{display:flex;align-items:center}
+.m-group span{font-family:'Changa';font-weight:800;font-size:clamp(30px,4vw,52px);letter-spacing:1px;white-space:nowrap;padding:0 26px;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.3)}
+.m-group span.fill{color:var(--red);-webkit-text-stroke:0}
+.m-group i{font-style:normal;color:var(--red);font-size:20px;-webkit-text-stroke:0}
+@media (prefers-reduced-motion:reduce){.m-track{animation:none}}
+
+/* ============ STATS ============ */
+.stats{border-bottom:1px solid var(--line);background:linear-gradient(180deg,#0b0b0e,#0a0a0d)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:52px 20px;text-align:center;border-inline-start:1px solid var(--line)}
+.stat:first-child{border-inline-start:0}
+.stat h3{font-size:clamp(40px,4.6vw,62px);font-weight:800;color:#fff;line-height:1}
+.stat h3 b{color:var(--red2)}
+.stat p{color:var(--muted);margin-top:12px;font-size:14px}
+
+/* ============ SECTION HEADS ============ */
+.sec-kicker{display:inline-flex;align-items:center;gap:10px;color:var(--red2);font-weight:700;font-size:13.5px;letter-spacing:.5px}
+.sec-kicker::before{content:'';width:28px;height:2px;background:var(--red);border-radius:2px}
+.sec-head h2{margin-top:14px;font-size:clamp(34px,4.8vw,58px);font-weight:800;line-height:1.25}
+.sec-head p{margin-top:12px;color:var(--muted);max-width:560px;line-height:1.9;font-size:15.5px}
+
+/* ============ DEVICES — 3D RING ============ */
+.devices::before{content:'';position:absolute;inset-inline:0;bottom:0;height:60%;background:radial-gradient(50% 55% at 50% 100%,rgba(232,25,44,.12),transparent 70%);pointer-events:none}
+.dev-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.ring-ctrl{display:flex;gap:12px}
+.rc{width:54px;height:54px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--txt);display:grid;place-items:center;transition:.3s}
+.rc:hover{border-color:var(--red);color:var(--red);transform:translateY(-3px)}
+.rc svg{width:20px;height:20px}
+.stage{position:relative;height:580px;display:grid;place-items:center;perspective:1400px;perspective-origin:50% 38%;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.stage::before{content:'';position:absolute;bottom:26px;width:min(680px,90vw);height:230px;background:radial-gradient(50% 60% at 50% 60%,rgba(232,25,44,.18),transparent 70%);filter:blur(8px);pointer-events:none}
+.disc{position:absolute;width:min(560px,86vw);aspect-ratio:1;border:1px dashed rgba(255,255,255,.14);border-radius:50%;bottom:44px;animation:rot 60s linear infinite;pointer-events:none}
+.disc::after{content:'';position:absolute;inset:13%;border:1px dashed rgba(232,25,44,.3);border-radius:50%;animation:rot 40s linear infinite reverse}
+.ring-pitch{transform:rotateX(-8deg);transform-style:preserve-3d}
+#ring{position:relative;width:210px;height:312px;transform-style:preserve-3d}
+.d-card{position:absolute;inset:0;background:linear-gradient(180deg,#15151c,#0e0e13);border:1px solid var(--line);border-radius:22px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;box-shadow:0 24px 50px rgba(0,0,0,.45);will-change:transform,opacity,filter}
+.d-tag{position:absolute;top:12px;inset-inline-start:12px;background:var(--red);color:#fff;font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:999px}
+.d-phone{position:relative;width:88px;height:172px;border-radius:18px;background:linear-gradient(160deg,var(--g1),var(--g2));box-shadow:inset 0 0 0 3px rgba(255,255,255,.22),0 12px 26px rgba(0,0,0,.45);margin-top:14px}
+.d-phone::before{content:'';position:absolute;top:9px;left:50%;transform:translateX(-50%);width:26px;height:7px;border-radius:4px;background:rgba(0,0,0,.5)}
+.d-card h4{margin-top:16px;font-size:16.5px;font-weight:700}
+.d-price{margin-top:6px;font-family:'Changa';font-weight:800;font-size:22px;color:var(--red2)}
+.d-price em{font-style:normal;font-family:'Tajawal';font-size:12px;color:var(--muted);font-weight:500}
+.drag-hint{display:flex;justify-content:center;margin-top:20px}
+.drag-hint span{display:inline-flex;align-items:center;gap:9px;color:var(--muted);font-size:13px;border:1px solid var(--line);border-radius:999px;padding:9px 18px;background:rgba(255,255,255,.03)}
+.drag-hint svg{width:16px;height:16px;color:var(--red2)}
+.dev-note{margin-top:10px;text-align:center;color:var(--muted);font-size:12.5px}
+
+/* ============ SERVICES ============ */
+.s-grid{margin-top:56px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.tilt{--gx:50%;--gy:50%;position:relative}
+.tilt::after{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(340px at var(--gx) var(--gy),rgba(255,255,255,.07),transparent 65%);opacity:0;transition:opacity .35s;pointer-events:none}
+.tilt:hover::after{opacity:1}
+.s-card{background:linear-gradient(180deg,#14141b,#0e0e13);border:1px solid var(--line);border-radius:22px;padding:36px 26px;overflow:hidden;transition:border-color .35s;will-change:transform}
+.s-card:hover{border-color:rgba(232,25,44,.5)}
+.s-icon{width:58px;height:58px;border-radius:17px;background:rgba(232,25,44,.12);border:1px solid rgba(232,25,44,.35);display:grid;place-items:center;color:var(--red2);margin-bottom:24px}
+.s-icon svg{width:26px;height:26px}
+.s-card h3{font-size:21px;margin-bottom:10px}
+.s-card p{color:var(--muted);font-size:14.5px;line-height:1.85}
+.s-num{position:absolute;top:16px;inset-inline-end:20px;font-family:'Changa';font-weight:800;font-size:46px;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.09)}
+
+/* ============ BRANCHES ============ */
+.b-grid{margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.b-card{background:linear-gradient(180deg,#14141b,#0e0e13);border:1px solid var(--line);border-radius:24px;padding:38px 32px;min-height:240px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:border-color .35s;will-change:transform}
+.b-card:hover{border-color:rgba(232,25,44,.5)}
+.b-num{position:absolute;top:14px;inset-inline-end:22px;font-family:'Changa';font-weight:800;font-size:76px;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.09)}
+.b-tag{color:var(--red2);font-weight:700;font-size:12.5px;letter-spacing:.5px}
+.b-card h3{font-size:30px;margin-top:8px}
+.b-city{color:var(--muted);font-size:14px;margin-top:6px}
+.b-actions{display:flex;gap:12px;align-items:center;margin-top:30px}
+.b-link{display:inline-flex;gap:9px;align-items:center;color:var(--txt);font-weight:700;font-size:14px;text-decoration:none;border:1px solid var(--line);padding:12px 20px;border-radius:13px;transition:.3s}
+.b-link:hover{background:var(--red);border-color:var(--red);color:#fff}
+.b-link svg{width:16px;height:16px}
+.b-call{width:46px;height:46px;border-radius:13px;border:1px solid var(--line);display:grid;place-items:center;color:var(--red2);text-decoration:none;transition:.3s}
+.b-call:hover{background:var(--red);border-color:var(--red);color:#fff}
+.b-call svg{width:19px;height:19px}
+
+/* ============ CTA ============ */
+.cta{padding:150px 0;text-align:center;overflow:hidden}
+.cta::before{content:'';position:absolute;top:-10%;inset-inline:0;height:70%;background:radial-gradient(45% 60% at 50% 40%,rgba(232,25,44,.14),transparent 70%);pointer-events:none}
+.cta .wrap{position:relative}
+.cta h2{margin-top:16px;font-size:clamp(36px,5.6vw,64px);font-weight:800;line-height:1.3}
+.cta-num{display:inline-block;position:relative;margin-top:44px;font-family:'Changa';font-weight:800;font-size:clamp(42px,9vw,104px);letter-spacing:2px;color:var(--txt);text-decoration:none;direction:ltr;transition:color .3s}
+.cta-num:hover{color:var(--red2)}
+.cta-num::before{content:'';position:absolute;inset:-30px -44px;border:1.5px dashed rgba(232,25,44,.4);border-radius:60px;animation:rot 28s linear infinite;pointer-events:none}
+.cta-row{margin-top:40px;display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap}
+.cta-note{color:var(--muted);font-size:14px}
+
+/* ============ FOOTER / FAB ============ */
+footer{border-top:1px solid var(--line);background:#09090c}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:40px;padding:70px 0 50px}
+.f-brand p{color:var(--muted);font-size:14.5px;line-height:1.9;margin-top:18px;max-width:320px}
+.foot-grid h4{font-size:17px;margin-bottom:18px}
+.f-col a,.f-col p{display:block;color:var(--muted);text-decoration:none;padding:5px 0;font-size:14.5px;transition:.25s}
+.f-col a:hover{color:var(--red2)}
+.foot-bar{display:flex;justify-content:space-between;gap:14px;padding-block:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;flex-wrap:wrap}
+.fab{position:fixed;bottom:22px;inset-inline-start:22px;z-index:800;width:58px;height:58px;border-radius:50%;background:var(--red);display:grid;place-items:center;color:#fff;text-decoration:none;box-shadow:0 12px 30px rgba(232,25,44,.45)}
+.fab::before{content:'';position:absolute;inset:0;border-radius:inherit;border:2px solid var(--red);animation:pulse 2s infinite}
+@keyframes pulse{to{transform:scale(1.7);opacity:0}}
+.fab svg{width:24px;height:24px}
+
+/* ============ REVEAL HELPERS / RESPONSIVE ============ */
+[data-reveal]{will-change:transform}
+@media (max-width:1024px){
+  .nav-links{display:none}.burger{display:block}
+  .hero .wrap{grid-template-columns:1fr}
+  .hero{padding-top:120px}
+  .hero-content{text-align:center}
+  .hero-title{justify-content:center}.hero-en{justify-content:center}
+  .hero-sub{margin-inline:auto}.hero-cta,.v-chips{justify-content:center}
+  .phone-scene{height:560px;margin-top:20px}
+  .s-grid{grid-template-columns:1fr 1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:820px){
+  .stats-grid{grid-template-columns:1fr 1fr;row-gap:14px}
+  .stat{border-inline-start:0;padding:34px 14px}
+  .b-grid{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  #ring{width:176px;height:272px}
+  .stage{height:470px}
+  .d-card{padding:16px 12px;border-radius:19px}
+  .d-phone{width:72px;height:142px}
+  .d-card h4{font-size:14.5px}.d-price{font-size:19px}
+  .orbit.o2{display:none}
+  .chip-1{inset-inline-end:0}.chip-2{inset-inline-start:0}
+  .section{padding:80px 0}
+  .scroll-hint{display:none}
+  .nav-cta .btn .txt{display:none}
+  .nav-cta .btn{padding:12px 14px}
+  .s-grid{grid-template-columns:1fr}
+  .phone-scene{transform:scale(.86)}
+  .foot-grid{grid-template-columns:1fr;gap:30px}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="pbar"></div>
+<div class="cursor-dot" id="cDot"></div>
+<div class="cursor-ring" id="cRing"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-center">
+    <div class="loader-q">Q</div>
+    <div class="loader-name">QUICK MOBILE CENTER</div>
+  </div>
+  <div class="loader-foot"><b id="loadNum">0</b> %</div>
+  <div class="loader-bar"><i id="loadBar"></i></div>
+</div>
+<noscript><style>#loader{display:none}</style></noscript>
+
+<!-- MOBILE MENU -->
+<div class="menu-overlay" id="menuOverlay">
+  <a class="m-link" href="#home"><i>01</i>الرئيسية</a>
+  <a class="m-link" href="#devices"><i>02</i>الأجهزة</a>
+  <a class="m-link" href="#services"><i>03</i>خدماتنا</a>
+  <a class="m-link" href="#branches"><i>04</i>فروعنا</a>
+  <a class="m-link" href="#contact"><i>05</i>تواصل معنا</a>
+  <div class="m-foot">
+    <a class="btn btn-red" href="tel:+962798050999"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span class="num-ltr">0798050999</span></a>
+    <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://www.instagram.com/quickmobilecenter/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1" fill="currentColor" stroke="none"/></svg>quickmobilecenter</a>
+  </div>
+</div>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="nav-in wrap">
+    <a href="#home" class="brand">
+      <span class="brand-q">Q</span>
+      <span class="brand-t">كويك موبايل<b>QUICK MOBILE CENTER</b></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#home">الرئيسية</a>
+      <a href="#devices">الأجهزة</a>
+      <a href="#services">خدماتنا</a>
+      <a href="#branches">فروعنا</a>
+      <a href="#contact">تواصل</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-red magnetic" href="tel:+962798050999">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span class="txt num-ltr">0798050999</span>
+      </a>
+      <button class="burger" id="burger" aria-label="القائمة"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="bg-glow"></div>
+  <div class="wm">QUICK</div>
+
+  <div class="wrap">
+    <div class="hero-content">
+      <span class="hero-tag">متجر هواتف محمولة · عمّان، الأردن</span>
+      <h1 class="hero-title">
+        <span class="mask"><span class="w">كويك</span></span>
+        <span class="mask"><span class="w">موبايل</span></span>
+        <span class="mask accent"><span class="w">سنتر</span></span>
+      </h1>
+      <div class="hero-en"><span class="line"></span>QUICK MOBILE CENTER<span class="line"></span></div>
+      <p class="hero-sub">أحدث الأجهزة الذكية، إكسسوارات أصلية، وصيانة معتمدة — كل شيء لعالمك التقني تحت سقف واحد، وبأسعار ما بتلاقيها وين ما رحت.</p>
+      <div class="hero-cta">
+        <a class="btn btn-red magnetic" href="#devices">تصفّح الأجهزة
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14m0 0-6-6m6 6 6-6"/></svg>
+        </a>
+        <a class="btn btn-ghost magnetic" href="tel:+962798050999">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span class="num-ltr">0798050999</span>
+        </a>
+      </div>
+      <div class="v-chips">
+        <span class="v-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>ضمان أصلي 100%</span>
+        <span class="v-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 12 22l-9-9V4a1 1 0 0 1 1-1h9l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" stroke="none"/></svg>أسعار الجملة</span>
+        <span class="v-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>4 فروع بعمّان</span>
+      </div>
+    </div>
+
+    <!-- 3D PHONE -->
+    <div class="phone-scene">
+      <div class="orbit o1"><i></i></div>
+      <div class="orbit o2"><i></i></div>
+      <div class="phone-wrap">
+        <div class="phone-tilt">
+          <div class="phone-float">
+            <div class="phone">
+              <div class="p-back">
+                <div class="cam"><b></b><b></b><b></b><u></u></div>
+                <div class="p-logo-back">QUICK MOBILE</div>
+              </div>
+              <div class="p-front">
+                <div class="p-screen">
+                  <div class="p-island"></div>
+                  <div class="p-time">9:41</div>
+                  <div class="p-date">عمّان · الأردن</div>
+                  <div class="p-notif"><b>Q</b><span>عرض اليوم · هدية مع كل جهاز</span></div>
+                  <div class="p-q">Q</div>
+                  <div class="p-dock"><i></i><i></i><i></i><i></i></div>
+                  <div class="p-shine"></div>
+                </div>
+              </div>
+              <span class="p-btn b1"></span><span class="p-btn b2"></span><span class="p-btn b3"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-shadow"></div>
+      <div class="chip chip-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>ضمان معتمد</div>
+      <div class="chip chip-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>أسعار لا تُنافس</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint"><div class="mouse"><i></i></div><span>اسحب للأسفل</span></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="m-track">
+    <div class="m-group">
+      <span class="fill">APPLE</span><i>✱</i><span>SAMSUNG</span><i>✱</i><span>XIAOMI</span><i>✱</i><span class="fill">HONOR</span><i>✱</i><span>HUAWEI</span><i>✱</i><span class="fill">INFINIX</span><i>✱</i><span>MOTOROLA</span><i>✱</i><span class="fill">TECNO</span><i>✱</i><span>NOTHING</span><i>✱</i><span class="fill">realme</span><i>✱</i>
+    </div>
+    <div class="m-group">
+      <span class="fill">APPLE</span><i>✱</i><span>SAMSUNG</span><i>✱</i><span>XIAOMI</span><i>✱</i><span class="fill">HONOR</span><i>✱</i><span>HUAWEI</span><i>✱</i><span class="fill">INFINIX</span><i>✱</i><span>MOTOROLA</span><i>✱</i><span class="fill">TECNO</span><i>✱</i><span>NOTHING</span><i>✱</i><span class="fill">realme</span><i>✱</i>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="wrap stats-grid">
+    <div class="stat" data-reveal><h3><span data-count="70.9" data-dec="1">0</span>K<b>+</b></h3><p>متابع على إنستغرام</p></div>
+    <div class="stat" data-reveal data-delay=".08"><h3><span data-count="3079">0</span></h3><p>منشور ومحتوى يومي</p></div>
+    <div class="stat" data-reveal data-delay=".16"><h3><span data-count="4">0</span></h3><p>فروع تغطّي عمّان</p></div>
+    <div class="stat" data-reveal data-delay=".24"><h3><span data-count="100">0</span><b>%</b></h3><p>أجهزة أصلية بضمان</p></div>
+  </div>
+</section>
+
+<!-- DEVICES — 3D RING -->
+<section class="section devices" id="devices">
+  <div class="wrap">
+    <div class="dev-head">
+      <div class="sec-head" data-reveal>
+        <span class="sec-kicker">تسوّق الآن</span>
+        <h2>أحدث <em>الأجهزة</em> بين يديك</h2>
+        <p>منصّة تفاعلية بأحدث الإصدارات — لفّ المنصة وشوف الجهاز اللي بدك ياه من كل الزوايا.</p>
+      </div>
+      <div class="ring-ctrl" data-reveal>
+        <button class="rc" id="prevBtn" aria-label="السابق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+        <button class="rc" id="nextBtn" aria-label="التالي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+      </div>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="disc"></div>
+      <div class="ring-pitch">
+        <div id="ring">
+          <div class="d-card" style="--g1:#d7dbe4;--g2:#7c8494"><span class="d-tag">الأكثر طلباً</span><div class="d-phone"></div><h4>iPhone 15 Pro Max</h4><p class="d-price">1,399 <em>د.أ</em></p></div>
+          <div class="d-card" style="--g1:#8ff0cd;--g2:#14684e"><span class="d-tag">جديد</span><div class="d-phone"></div><h4>Galaxy S25 FE</h4><p class="d-price">388 <em>د.أ</em></p></div>
+          <div class="d-card" style="--g1:#ffb36b;--g2:#b3440e"><span class="d-tag">عرض خاص</span><div class="d-phone"></div><h4>Redmi A7 Pro</h4><p class="d-price">105 <em>د.أ</em></p></div>
+          <div class="d-card" style="--g1:#93e6d8;--g2:#0e756b"><div class="d-phone"></div><h4>Honor X8b</h4><p class="d-price">139 <em>د.أ</em></p></div>
+          <div class="d-card" style="--g1:#f6d096;--g2:#a35a12"><span class="d-tag">الأكثر أناقة</span><div class="d-phone"></div><h4>Huawei Nova 15 Max</h4><p class="d-price">279 <em>د.أ</em></p></div>
+          <div class="d-card" style="--g1:#8fb8ff;--g2:#1e4fd6"><div class="d-phone"></div><h4>Motorola Edge 60</h4><p class="d-price">277 <em>د.أ</em></p></div>
+          <div class="d-card" style="--g1:#cbb0ff;--g2:#5b21b6"><span class="d-tag">اقتصادي</span><div class="d-phone"></div><h4>Tecno Spark 50C</h4><p class="d-price">59 <em>د.أ</em></p></div>
+          <div class="d-card" style="--g1:#a5e77f;--g2:#1d6b30"><div class="d-phone"></div><h4>Infinix Smart 20</h4><p class="d-price">99 <em>د.أ</em></p></div>
+        </div>
+      </div>
+    </div>
+    <div class="drag-hint" data-reveal><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>اسحب لتدوير المنصة</span></div>
+    <p class="dev-note">* الأسعار قابلة للتحديث — اتصل بينا <b class="num-ltr">0798050999</b> لمعرفة آخر العروض والهدايا.</p>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="sec-kicker">ليش كويك؟</span>
+      <h2>مش بس متجر… <em>تجربة كاملة</em></h2>
+      <p>من لحظة ما بتدخل الفرع لما بتطلع بجهازك الجديد — إحنا معك بكل خطوة.</p>
+    </div>
+    <div class="s-grid">
+      <article class="s-card tilt" data-reveal>
+        <span class="s-num">01</span>
+        <div class="s-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
+        <h3>أحدث الأجهزة</h3>
+        <p>أحدث الإصدارات فور وصولها للأردن — أصلية 100% وبضمان معتمد، مع هدايا وعروض باستمرار.</p>
+      </article>
+      <article class="s-card tilt" data-reveal data-delay=".08">
+        <span class="s-num">02</span>
+        <div class="s-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <h3>صيانة معتمدة</h3>
+        <p>مركز صيانة متخصص بأيدي خبراء — قطع أصلية، فحص دقيق، وسرعة ما بتلحق عليها.</p>
+      </article>
+      <article class="s-card tilt" data-reveal data-delay=".16">
+        <span class="s-num">03</span>
+        <div class="s-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H4a1 1 0 0 1-1-1v-6Z"/><path d="M21 14h-3a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1a1 1 0 0 0 1-1v-6Z"/><path d="M3 14v-3a9 9 0 0 1 18 0v3"/></svg></div>
+        <h3>إكسسوارات أصلية</h3>
+        <p>سماعات، شواحن، كفرات وسلاسل من أكبر العلامات العالمية — كل ما يكمّل جهازك.</p>
+      </article>
+      <article class="s-card tilt" data-reveal data-delay=".24">
+        <span class="s-num">04</span>
+        <div class="s-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
+        <h3>عروض وهدايا</h3>
+        <p>هدية مع كل جهاز، باقات حصرية، وعروض موسمية تتابعها أول بأول على إنستغرام.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- BRANCHES -->
+<section class="section" id="branches">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="sec-kicker">فروعنا</span>
+      <h2>أقرب فرع <em>عنك</em>؟</h2>
+      <p>4 فروع تغطّي عمّان — زورونا وجرّب الفرق، أو اتصل بينا وأحنا جاهزين.</p>
+    </div>
+    <div class="b-grid">
+      <article class="b-card tilt" data-reveal>
+        <span class="b-num">01</span>
+        <div><span class="b-tag">FRANCHISE 01</span><h3>الدوار السابع</h3><p class="b-city">عمّان — الأردن</p></div>
+        <div class="b-actions">
+          <a class="b-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Quick+Mobile+Center+7th+Circle+Amman">الموقع على الخريطة<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7 7 17"/><path d="M17 17H7V7"/></svg></a>
+          <a class="b-call" href="tel:+962798050999" aria-label="اتصل"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+        </div>
+      </article>
+      <article class="b-card tilt" data-reveal data-delay=".08">
+        <span class="b-num">02</span>
+        <div><span class="b-tag">FRANCHISE 02</span><h3>ماركا الشمالية</h3><p class="b-city">عمّان — الأردن</p></div>
+        <div class="b-actions">
+          <a class="b-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Quick+Mobile+Center+Marka+Amman">الموقع على الخريطة<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7 7 17"/><path d="M17 17H7V7"/></svg></a>
+          <a class="b-call" href="tel:+962798050999" aria-label="اتصل"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+        </div>
+      </article>
+      <article class="b-card tilt" data-reveal data-delay=".16">
+        <span class="b-num">03</span>
+        <div><span class="b-tag">FRANCHISE 03</span><h3>طبربور</h3><p class="b-city">عمّان — الأردن</p></div>
+        <div class="b-actions">
+          <a class="b-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Quick+Mobile+Center+Tabarbour+Amman">الموقع على الخريطة<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7 7 17"/><path d="M17 17H7V7"/></svg></a>
+          <a class="b-call" href="tel:+962798050999" aria-label="اتصل"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+        </div>
+      </article>
+      <article class="b-card tilt" data-reveal data-delay=".24">
+        <span class="b-num">04</span>
+        <div><span class="b-tag">FRANCHISE 04</span><h3>تلاع العلي</h3><p class="b-city">عمّان — الأردن</p></div>
+        <div class="b-actions">
+          <a class="b-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Quick+Mobile+Center+Tla+Al+Ali+Amman">الموقع على الخريطة<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7 7 17"/><path d="M17 17H7V7"/></svg></a>
+          <a class="b-call" href="tel:+962798050999" aria-label="اتصل"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="wrap" data-reveal>
+    <span class="sec-kicker" style="justify-content:center;display:flex">جاهز تنقّل؟</span>
+    <h2>جوالك الجديد<br>على بُعد <em>مكالمة واحدة</em></h2>
+    <a class="cta-num magnetic" href="tel:+962798050999">0798050999</a>
+    <div class="cta-row">
+      <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://www.instagram.com/quickmobilecenter/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1" fill="currentColor" stroke="none"/></svg>تابعنا على إنستغرام</a>
+      <span class="cta-note">4 فروع · أجهزة أصلية · هدايا مع كل جهاز</span>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot-grid">
+    <div class="f-brand">
+      <a href="#home" class="brand"><span class="brand-q">Q</span><span class="brand-t">كويك موبايل<b>QUICK MOBILE CENTER</b></span></a>
+      <p>وجهتك الأولى لأحدث الهواتف والأجهزة الذكية في عمّان — ضمان أصلي، أسعار منافسة، وخدمة بتحكي عن حالها.</p>
+    </div>
+    <div class="f-col">
+      <h4>روابط</h4>
+      <a href="#home">الرئيسية</a><a href="#devices">الأجهزة</a><a href="#services">خدماتنا</a><a href="#branches">فروعنا</a>
+    </div>
+    <div class="f-col">
+      <h4>الفروع</h4>
+      <p>الدوار السابع</p><p>ماركا الشمالية</p><p>طبربور</p><p>تلاع العلي</p>
+    </div>
+    <div class="f-col">
+      <h4>تواصل</h4>
+      <a href="tel:+962798050999" class="num-ltr">0798050999</a>
+      <a href="https://www.instagram.com/quickmobilecenter/" target="_blank" rel="noopener">@quickmobilecenter</a>
+      <p>عمّان — الأردن</p>
+    </div>
+  </div>
+  <div class="wrap foot-bar">
+    <span>© 2025 كويك موبايل سنتر — Quick Mobile Center · جميع الحقوق محفوظة</span>
+    <span>صُمّم بشغف في عمّان</span>
+  </div>
+</footer>
+
+<a class="fab" href="tel:+962798050999" aria-label="اتصل الآن">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+</a>
+
+<div class="noise"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
+<script>
+(function () {
+  /* ✅ حماية: إذا GSAP ما اتحمّل (CDN مقطوع) ن remove اللودر حتى ما نعلّق بالمتصفح */
+  if (!window.gsap || !window.ScrollTrigger || !window.ScrollToPlugin) {
+    const l = document.getElementById('loader');
+    if (l) l.remove();
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+  const $  = (s, c=document) => c.querySelector(s);
+  const $$ = (s, c=document) => [...c.querySelectorAll(s)];
+  const RM   = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FINE = matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  /* ---------- Custom cursor (اسم halo حتى ما يتعارض مع ring تبع الكاروسيل) ---------- */
+  const dot = $('#cDot'), halo = $('#cRing');
+  gsap.set([dot, halo], {x:-100, y:-100});
+  if (FINE) {
+    const dx = gsap.quickTo(dot,'x',{duration:.12,ease:'power2'}), dy = gsap.quickTo(dot,'y',{duration:.12,ease:'power2'});
+    const rx = gsap.quickTo(halo,'x',{duration:.45,ease:'power3'}), ry = gsap.quickTo(halo,'y',{duration:.45,ease:'power3'});
+    window.addEventListener('mousemove', e => { dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY); });
+    $$('a,button,.d-card,.tilt').forEach(el => {
+      el.addEventListener('mouseenter', () => gsap.to(halo,{scale:1.8,borderColor:'rgba(232,25,44,.9)',duration:.3}));
+      el.addEventListener('mouseleave', () => gsap.to(halo,{scale:1,borderColor:'rgba(255,255,255,.5)',duration:.3}));
+    });
+  }
+
+  /* ---------- Hero entrance ---------- */
+  function heroIn(){
+    gsap.timeline({defaults:{ease:'power3.out'}})
+      .from('#nav',{y:-70,autoAlpha:0,duration:.8})
+      .from('.hero-tag',{y:26,autoAlpha:0,duration:.6},.05)
+      .from('.hero-title .w',{yPercent:130,duration:1,stagger:.1,ease:'power4.out'},.1)
+      .from('.hero-en',{y:18,autoAlpha:0,duration:.6},.4)
+      .from('.hero-sub',{y:26,autoAlpha:0,duration:.7},.45)
+      .from('.hero-cta > *',{y:22,autoAlpha:0,stagger:.09,duration:.6},.55)
+      .from('.v-chip',{y:16,autoAlpha:0,stagger:.08,duration:.5},.72)
+      .from('.phone-wrap',{y:90,autoAlpha:0,rotationX:-22,duration:1.2,ease:'power4.out'},.35)
+      .from('.orbit',{autoAlpha:0,stagger:.1,duration:1},.55)
+      .from('.chip',{scale:.4,autoAlpha:0,stagger:.12,duration:.6,ease:'back.out(1.8)'},.95)
+      .from('.scroll-hint',{autoAlpha:0,duration:.6},1.15);
+  }
+
+  /* ---------- Loader ---------- */
+  if (RM) { $('#loader').remove(); heroIn(); }
+  else {
+    const num = $('#loadNum'), bar = $('#loadBar'), c = {v:0};
+    gsap.timeline()
+      .to(c,{v:100,duration:2,ease:'power2.inOut',onUpdate(){
+          num.textContent = Math.round(c.v);
+          bar.style.transform = 'scaleX(' + (c.v/100) + ')';
+        }})
+      .to('.loader-center',{y:-30,autoAlpha:0,duration:.45,ease:'power2.in'},'+=.1')
+      .to('#loader',{yPercent:-100,duration:.85,ease:'power4.inOut'},'-=.15')
+      .add(heroIn,'-=.4')
+      .set('#loader',{display:'none'});
+  }
+
+  /* ---------- Nav scrolled state ---------- */
+  window.addEventListener('scroll', () => $('#nav').classList.toggle('scrolled', scrollY > 60), {passive:true});
+
+  /* ---------- Mobile menu ---------- */
+  const overlay = $('#menuOverlay'), burger = $('#burger');
+  let menuOpen = false;
+  const mTl = gsap.timeline({paused:true, onReverseComplete(){ gsap.set(overlay,{visibility:'hidden'}); }})
+    .set(overlay,{visibility:'visible'})
+    .to(overlay,{clipPath:'circle(150% at calc(100% - 52px) 39px)',duration:.75,ease:'power3.inOut'})
+    .from($$('.m-link'),{y:46,autoAlpha:0,stagger:.07,duration:.5,ease:'power3.out'},'-=.25')
+    .from($$('.m-foot'),{y:20,autoAlpha:0,duration:.4},'-=.3');
+  function toggleMenu(force){
+    menuOpen = force !== undefined ? force : !menuOpen;
+    burger.classList.toggle('open', menuOpen);
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    menuOpen ? mTl.timeScale(1).play() : mTl.timeScale(1.4).reverse();
+  }
+  burger.addEventListener('click', () => toggleMenu());
+  window.addEventListener('keydown', e => { if (e.key === 'Escape' && menuOpen) toggleMenu(false); });
+
+  /* ---------- Smooth anchors ---------- */
+  $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+    const id = a.getAttribute('href'); if (id.length < 2) return;
+    const t = $(id); if (!t) return;
+    e.preventDefault();
+    if (menuOpen) toggleMenu(false);
+    gsap.to(window,{duration:1.1,ease:'power3.inOut',scrollTo:{y:t,offsetY:76}});
+  }));
+
+  /* ---------- Hero: mouse parallax + idle float ---------- */
+  gsap.set('.phone-tilt',{rotationY:-14});
+  if (FINE) {
+    const tY = gsap.quickTo('.phone-tilt','rotationY',{duration:.9,ease:'power3'});
+    const tX = gsap.quickTo('.phone-tilt','rotationX',{duration:.9,ease:'power3'});
+    const gX = gsap.quickTo('.bg-glow','x',{duration:1.2,ease:'power2'});
+    const gY = gsap.quickTo('.bg-glow','y',{duration:1.2,ease:'power2'});
+    window.addEventListener('mousemove', e => {
+      const nx = e.clientX/innerWidth - .5, ny = e.clientY/innerHeight - .5;
+      tY(-14 + nx*18); tX(-ny*12); gX(nx*50); gY(ny*36);
+    });
+  }
+  if (!RM) {
+    gsap.to('.phone-float',{y:-14,duration:2.8,yoyo:true,repeat:-1,ease:'sine.inOut'});
+    gsap.to('.chip-1',{y:-12,duration:3.2,yoyo:true,repeat:-1,ease:'sine.inOut'});
+    gsap.to('.chip-2',{y:10,duration:2.7,yoyo:true,repeat:-1,ease:'sine.inOut',delay:.5});
+  }
+
+  /* ---------- Hero: scroll flip (front → camera) ---------- */
+  gsap.timeline({scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:1}})
+    .to('.phone',{rotationY:205, y:-50, ease:'none'},0)
+    .to('.wm',{yPercent:26, ease:'none'},0);
+
+  /* ---------- Generic reveals ---------- */
+  $$('[data-reveal]').forEach(el => {
+    gsap.from(el,{y:42,autoAlpha:0,duration:.9,ease:'power3.out',
+      delay:parseFloat(el.dataset.delay || 0),
+      scrollTrigger:{trigger:el,start:'top 88%',once:true}});
+  });
+
+  /* ---------- Counters ---------- */
+  $$('[data-count]').forEach(el => {
+    const end = parseFloat(el.dataset.count), dec = el.dataset.dec ? 1 : 0;
+    ScrollTrigger.create({trigger:el,start:'top 88%',once:true,onEnter(){
+      const o = {v:0};
+      gsap.to(o,{v:end,duration:2,ease:'power2.out',onUpdate(){
+        el.textContent = dec ? o.v.toFixed(1) : Math.round(o.v).toLocaleString('en-US');
+      }});
+    }});
+  });
+
+  /* ---------- 3D Ring carousel ---------- */
+  const ring  = $('#ring'), stage = $('#stage');
+  const cards = $$('.d-card');
+  const N = cards.length, ANG = 360/N;
+  let rot = 0, vel = 0, dragging = false, hoverPause = false, snapping = false;
+  const autoSpeed = RM ? 0 : .11;
+
+  function layoutRing(){
+    const R = Math.round((cards[0].offsetWidth/2) / Math.tan(Math.PI/N)) + 28;
+    cards.forEach((c,i) => gsap.set(c,{transform:'rotateY(' + (i*ANG) + 'deg) translateZ(' + R + 'px)'}));
+  }
+  layoutRing();
+  window.addEventListener('resize', layoutRing);
+
+  gsap.ticker.add(() => {
+    if (!dragging && !snapping) {
+      rot += vel; vel *= .94;
+      if (!hoverPause) rot += autoSpeed;
+    }
+    gsap.set(ring,{rotationY:rot});
+    cards.forEach((c,i) => {
+      const f = Math.max(0, Math.cos((rot + i*ANG) * Math.PI/180));
+      c.style.opacity   = .22 + .78*f;
+      c.style.filter    = 'brightness(' + (.45 + .55*f) + ')';
+      c.style.zIndex    = 100 + Math.round(f*100);
+    });
+  });
+
+  stage.addEventListener('pointerdown', e => {
+    dragging = true; vel = 0;
+    stage.setPointerCapture(e.pointerId);
+  });
+  stage.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    const dx2 = e.clientX - (stage._lx ?? e.clientX);
+    stage._lx = e.clientX;
+    vel = dx2 * .22; rot += dx2 * .22;
+  });
+  ['pointerup','pointercancel'].forEach(ev => stage.addEventListener(ev, () => {
+    dragging = false; stage._lx = null;
+  }));
+  if (FINE) {
+    stage.addEventListener('mouseenter', () => hoverPause = true);
+    stage.addEventListener('mouseleave', () => hoverPause = false);
+  }
+
+  function step(dir){
+    if (snapping) return;
+    snapping = true; vel = 0;
+    const o = {r:rot};
+    gsap.to(o,{r: rot - dir*ANG, duration:.7, ease:'power3.inOut',
+      onUpdate:() => rot = o.r, onComplete:() => snapping = false});
+  }
+  $('#nextBtn').addEventListener('click', () => step(1));
+  $('#prevBtn').addEventListener('click', () => step(-1));
+
+  /* ---------- 3D tilt cards ---------- */
+  gsap.set($$('.tilt'),{transformPerspective:900});
+  $$('.tilt').forEach(card => {
+    const rX = gsap.quickTo(card,'rotationX',{duration:.6,ease:'power2'});
+    const rY = gsap.quickTo(card,'rotationY',{duration:.6,ease:'power2'});
+    card.addEventListener('mousemove', e => {
+      const b = card.getBoundingClientRect();
+      const nx = (e.clientX-b.left)/b.width - .5, ny = (e.clientY-b.top)/b.height - .5;
+      rX(-ny*7); rY(nx*9);
+      card.style.setProperty('--gx', ((nx+.5)*100)+'%');
+      card.style.setProperty('--gy', ((ny+.5)*100)+'%');
+    });
+    card.addEventListener('mouseleave', () => { rX(0); rY(0); });
+  });
+
+  /* ---------- Magnetic buttons ---------- */
+  if (FINE) $$('.magnetic').forEach(btn => {
+    const mx = gsap.quickTo(btn,'x',{duration:.4,ease:'power3'});
+    const my = gsap.quickTo(btn,'y',{duration:.4,ease:'power3'});
+    btn.addEventListener('mousemove', e => {
+      const b = btn.getBoundingClientRect();
+      mx((e.clientX-(b.left+b.width/2))*.3);
+      my((e.clientY-(b.top+b.height/2))*.3);
+    });
+    btn.addEventListener('mouseleave', () => { mx(0); my(0); });
+  });
+
+  /* ---------- Scroll progress ---------- */
+  gsap.to('#pbar',{scaleX:1,ease:'none',scrollTrigger:{start:0,end:'max',scrub:.3}});
+
+  /* ---------- Refresh after fonts/images load ---------- */
+  window.addEventListener('load', () => ScrollTrigger.refresh());
+})();
+</script>
+</body>
+</html>
